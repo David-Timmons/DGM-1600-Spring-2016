@@ -1,0 +1,5 @@
+Syntax is like a format for a programming language or markup language.
+It involves a lot of things like semicolons at the end of lines and quotation
+marks or parentheses at certain places. If a mistake is made in the syntax, you have a syntax error.
+A compiler will check for syntax as well as semantic errors and report them back to you.
+syntax is the frontend. semantics are the backend.
