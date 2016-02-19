@@ -9,7 +9,6 @@ public class move : MonoBehaviour {
 	public float moveGain = .5F;
 	public float maxMoveSpeed = 5;
 	public float jumpHeight = 6;
-	float jumpAmount = 0.5F;
 
 
 	public float GetY(){
@@ -26,7 +25,10 @@ public class move : MonoBehaviour {
 	public Transform groundCheck;
 	public float groundCheckRadius;
 	public LayerMask whatIsGround;
-	private bool grounded;
+	public bool grounded;
+
+	// Double Jump Variable
+	public bool doubleJumped;
 
 
 
@@ -44,6 +46,15 @@ public class move : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		if (GetComponent<Rigidbody2D> ().velocity.x > 1) {
+			transform.localScale = new Vector3(1f,1f,1f);
+		}
+
+		else if (GetComponent<Rigidbody2D> ().velocity.x < -1) {
+			transform.localScale = new Vector3(-1f,1f,1f);
+		}
+			
 		if (Input.GetKey (KeyCode.A)) {
 			if (moveSpeed < maxMoveSpeed){
 				moveSpeed = moveSpeed + moveGain;
@@ -56,10 +67,35 @@ public class move : MonoBehaviour {
 			}
 			GetComponent<Rigidbody2D> ().velocity = new Vector2 (moveSpeed, GetY ());
 		}
-		if (Input.GetKeyDown (KeyCode.Space)&& jumpAmount < 1.5) {
-			jumpAmount ++;
-			GetComponent<Rigidbody2D> ().velocity = new Vector2 (GetX (), jumpHeight / jumpAmount);
+		if (Input.GetKeyDown (KeyCode.Space) && grounded) {
+			GetComponent<Rigidbody2D> ().velocity = new Vector2 (GetX (), jumpHeight);
 		}
+
+
+
+
+
+
+		// Double Jump
+
+		if (grounded) {
+			doubleJumped = false;
+		}
+
+		if (Input.GetKeyDown (KeyCode.Space) && !doubleJumped && !grounded) {
+			GetComponent<Rigidbody2D> ().velocity = new Vector2 (GetX (), jumpHeight);
+			doubleJumped = true;
+		}
+
+
+
+
+
+
+
+
+
+
 		if (Input.GetKey (KeyCode.A)) {
 
 		} else if (Input.GetKey (KeyCode.D)) {
@@ -75,9 +111,6 @@ public class move : MonoBehaviour {
 		}
 		if (moveSpeed > maxMoveSpeed) {
 			moveSpeed = maxMoveSpeed;
-		}
-		if (grounded && jumpAmount != 0) {
-			jumpAmount = 0;
 		}
 	}
 }
