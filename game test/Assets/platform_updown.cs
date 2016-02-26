@@ -4,7 +4,7 @@ using System.Collections;
 public class platform_updown : MonoBehaviour {
 
 	public int speed = 2;
-	int time = 0;
+	public int time = 0;
 	public int timer = 399;
 
 	// Use this for initialization
